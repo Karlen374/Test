@@ -3,9 +3,10 @@ import SignInForm from 'src/components/signInForm/signInForm';
 import SignUpForm from 'src/components/signUpForm/signUpForm';
 import Modal from 'src/components/modal/modal';
 import UserInfoHeader from './UserInfoHeader';
+import UserProfileInfo from './userProfileInfo';
 
 const UserInfo = () => {
-  const { signInModal, signUpModal } = useAppSelector((store) => store.authorization);
+  const { registeredUserData, signInModal, signUpModal } = useAppSelector((store) => store.authorization);
   return (
     <>
       <UserInfoHeader />
@@ -15,9 +16,13 @@ const UserInfo = () => {
       <Modal active={signUpModal}>
         <SignUpForm />
       </Modal>
+      {registeredUserData && <UserProfileInfo />}
+      {!registeredUserData && (
       <h2>
-        Profile Page
+        для получения  полного доступа нужно зарегистрироваться
       </h2>
+      )}
+
     </>
   );
 };

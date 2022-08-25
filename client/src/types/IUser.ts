@@ -5,6 +5,5 @@ export interface IUser {
   userGender: string;
   email: string;
   _id: string;
-  userRole: string;
   token: string;
 }

@@ -1,8 +1,14 @@
+import ContactsHeader from 'src/components/contactsHeader/contactsHeader';
+
 const ContactsPage = () => {
   return (
-    <h2>
-      Contacts Page
-    </h2>
+    <>
+      <ContactsHeader />
+      <h2>
+        Contacts Page
+      </h2>
+    </>
+
   );
 };
 export default ContactsPage;
