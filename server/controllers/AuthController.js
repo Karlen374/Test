@@ -1,5 +1,4 @@
 import User from "../models/user.js";
-import Role from "../models/role.js";
 import bcrypt from "bcryptjs";
 import { validationResult } from "express-validator";
 import jwt from 'jsonwebtoken';
@@ -21,14 +20,12 @@ class AuthController {
         return res.status(400).json({message:"Ошибка при регистрации ", errors})
       }
       const {userName, userAge, userGender, userCity, email, password} = req.body
-      console.log(req.body);
       const candidate =await User.findOne({email})
       if (candidate) {
         return res.status(400).json({message: "Пользователь с таким Email-ом уже существует"})
       }
       const hashPassword = bcrypt.hashSync(password,7)
-      const userRole = await Role.findOne({value:"USER"})
-      const user = new User({ userName,userAge,userGender,userCity,email,password:hashPassword,roles:[userRole.value] })
+      const user = new User({ userName,userAge,userGender,userCity,email,password:hashPassword })
       await user.save()
       return res.json({message: "Пользователь успешно зарегистрирован"})
     } catch (e) {
@@ -55,19 +52,10 @@ class AuthController {
         userGender:user.userGender,
         userAge:user.userAge,
         email:user.email,
-        role:user.roles[0],
         token})
     } catch (e) {
       console.log(e);
       res.status(400).json({message: "Login Error"});
-    }
-  }
-  async getUsers(req, res) {
-    try {
-      const users = await User.find()
-      res.json(users)
-    } catch (e) {
-      
     }
   }
 }

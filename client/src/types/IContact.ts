@@ -3,5 +3,5 @@ export interface IContact{
   surName:string;
   authorId:string;
   number:string;
-  id:string;
+  _id:string;
 }

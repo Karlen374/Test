@@ -10,8 +10,9 @@ const useContactService = () => {
     return res;
   };
 
-  const getContacts = async (authorId:string) => {
-    const res = await request(`${_apiBase}/getContacts`, 'GET', JSON.stringify({ authorId }));
+  const getContacts = async (authorid:string) => {
+    const header = { authorid, 'Content-Type': 'application/json' };
+    const res = await request(`${_apiBase}/get`, 'GET', null, header);
     return res;
   };
   return {

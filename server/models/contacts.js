@@ -1,12 +1,14 @@
 import mongoose from "mongoose";
 
 const Contact = new mongoose.Schema({
-  contactName: { type: String, required: true },
-  contactSurname: { type: string, required: true },
-  contactAge: { type: Number, required:true },
-  contactGender: { type: String, required: true },
-  contactCity: { type: String, required: true },
-  userId: { type: String, required: true }
-})
+  name: { type: String, required: true },
+  surName: { type: String, required: true },
+  age: { type: Number, required:true },
+  gender: { type: String, required: true },
+  city: { type: String, required: true },
+  number: { type: String, required: true },
+  authorId: { type: String, required: true },
+  _id: { type: String, required: true }
+}, { versionKey: false })
 
 export default mongoose.model('Contact',Contact)
