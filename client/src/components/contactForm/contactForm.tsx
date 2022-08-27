@@ -6,11 +6,11 @@ import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from 'src/hooks/hooks';
-import { closeContactModal, create } from 'src/store/slices/contactSlice';
+import { closeContactModal, create, edit } from 'src/store/slices/contactSlice';
 import { v4 as uuidv4 } from 'uuid';
 import styles from './contactForm.module.scss';
 
-type FormData = {
+export type FormData = {
   name:string;
   surName:string;
   age:number;
@@ -21,24 +21,29 @@ type FormData = {
 
 const ContactForm = () => {
   const { registeredUserData } = useAppSelector((store) => store.authorization);
+  const { editContact } = useAppSelector((store) => store.contact);
   const {
     register,
     formState: { errors },
     handleSubmit,
     reset,
-  } = useForm<FormData>({ mode: 'onBlur' });
+  } = useForm<FormData>({ mode: 'onBlur', defaultValues: editContact });
   const dispatch = useAppDispatch();
-  const signUpUser = (formState:FormData) => {
+  const createContact = (formState:FormData) => {
     if (registeredUserData) {
-      dispatch(create({
-        ...formState, _id: uuidv4(), authorId: registeredUserData?._id, number: '1',
-      }));
+      if (!editContact.name) {
+        dispatch(create({
+          ...formState, _id: uuidv4(), authorId: registeredUserData?._id,
+        }));
+      } else {
+        dispatch(edit(formState));
+      }
     }
     dispatch(closeContactModal());
     reset();
   };
   return (
-    <form onSubmit={handleSubmit(signUpUser)}>
+    <form onSubmit={handleSubmit(createContact)}>
       <Grid container spacing={2}>
         <Grid item lg={12} md={12} sm={12} xs={12}>
           <TextField
@@ -70,6 +75,22 @@ const ContactForm = () => {
           />
           {errors.surName?.message && (
             <div className={styles.Contact_Form__ErrorMessage}>{errors.surName?.message}</div>
+          )}
+        </Grid>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
+          <TextField
+            label="Number"
+            type="text"
+            {...register('number', {
+              required: 'This field is required',
+              pattern: {
+                value: /[1-9,+]+$/i,
+                message: 'используйте цифры',
+              },
+            })}
+          />
+          {errors.number?.message && (
+            <div className={styles.Contact_Form__ErrorMessage}>{errors.number?.message}</div>
           )}
         </Grid>
         <Grid item lg={12} md={12} sm={12} xs={12}>

@@ -14,10 +14,10 @@ class ContactController {
   async edit (req,res) {
     try {
       const contact = req.body
-      if (!contact.id){
+      if (!contact._id){
         res.status(400).json({message: 'Id не указан'})
       }
-      const updatedContact = await Contact.findByIdAndUpdate(contact.id,contact,{new:true})
+      const updatedContact = await Contact.findByIdAndUpdate(contact._id,contact,{new:true})
       return res.status(200).json(updatedContact)
     } catch (e){
       res.status(500).json(e)

@@ -2,15 +2,28 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import useContactService from 'src/services/useContactService';
 import { IContact } from 'src/types/IContact';
 
+interface IEditForm{
+  name:string;
+  surName:string;
+  age:number;
+  gender:string;
+  city:string;
+  number: string;
+}
 interface ContactState {
   contactModal:boolean;
   userContacts: IContact[] | null;
+  editContact: IEditForm;
+  editContactId: string;
   alertMessage:string
 }
-
 const initialState:ContactState = {
   contactModal: false,
   userContacts: null,
+  editContact: {
+    name: '', surName: '', age: 18, gender: '', city: '', number: '',
+  },
+  editContactId: '',
   alertMessage: '',
 };
 
@@ -30,7 +43,14 @@ export const get = createAsyncThunk(
     return response;
   },
 );
-
+export const edit = createAsyncThunk(
+  'contact/edit',
+  async (data:IContact) => {
+    const { editContact } = useContactService();
+    const response = await editContact(data);
+    return response;
+  },
+);
 const ContactSlice = createSlice({
   name: 'contact',
   initialState,
@@ -40,6 +60,14 @@ const ContactSlice = createSlice({
     },
     closeContactModal: (state) => {
       state.contactModal = false;
+      state.editContact = {
+        name: '', surName: '', age: 18, gender: '', city: '', number: '',
+      };
+    },
+    getEditContactData: (state, action) => {
+      console.log(action.payload);
+      state.editContact = action.payload;
+      state.contactModal = true;
     },
 
   },
@@ -61,4 +89,5 @@ export default reducer;
 export const {
   openContactModal,
   closeContactModal,
+  getEditContactData,
 } = actions;

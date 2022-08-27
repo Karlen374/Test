@@ -15,9 +15,14 @@ const useContactService = () => {
     const res = await request(`${_apiBase}/get`, 'GET', null, header);
     return res;
   };
+  const editContact = async (data:IContact) => {
+    const res = await request(`${_apiBase}/edit`, 'POST', JSON.stringify(data));
+    return res;
+  };
   return {
     createContact,
     getContacts,
+    editContact,
   };
 };
 

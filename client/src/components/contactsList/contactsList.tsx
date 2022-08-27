@@ -12,11 +12,11 @@ const ContactsList = () => {
     enter: { opacity: 1 },
     leave: { opacity: 0 },
     delay: 0,
-    key: (item) => item.id,
+    key: (item:any) => item?._id,
   });
 
   return (
-    <div className={styles.Car_List}>
+    <div className={styles.contact}>
       <Grid container spacing={3}>
         <div className="css-zow5z4-MuiGrid-root">
           {transitions(({ opacity }, item) => (
