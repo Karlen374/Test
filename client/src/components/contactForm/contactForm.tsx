@@ -8,16 +8,8 @@ import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from 'src/hooks/hooks';
 import { closeContactModal, create, edit } from 'src/store/slices/contactSlice';
 import { v4 as uuidv4 } from 'uuid';
+import { IContact } from 'src/types/IContact';
 import styles from './contactForm.module.scss';
-
-export type FormData = {
-  name:string;
-  surName:string;
-  age:number;
-  gender:string;
-  city:string;
-  number: string;
-};
 
 const ContactForm = () => {
   const { registeredUserData } = useAppSelector((store) => store.authorization);
@@ -27,9 +19,9 @@ const ContactForm = () => {
     formState: { errors },
     handleSubmit,
     reset,
-  } = useForm<FormData>({ mode: 'onBlur', defaultValues: editContact });
+  } = useForm<IContact>({ mode: 'onBlur', defaultValues: editContact });
   const dispatch = useAppDispatch();
-  const createContact = (formState:FormData) => {
+  const createContact = (formState:IContact) => {
     if (registeredUserData) {
       if (!editContact.name) {
         dispatch(create({
@@ -50,10 +42,10 @@ const ContactForm = () => {
             label="Name"
             type="text"
             {...register('name', {
-              required: 'This field is required',
+              required: 'это поле обязательное',
               pattern: {
                 value: /^[A-Za-z]+$/i,
-                message: 'use characters a-Z',
+                message: 'используйте символы a-Z',
               },
             })}
           />
@@ -66,10 +58,10 @@ const ContactForm = () => {
             label="surName"
             type="text"
             {...register('surName', {
-              required: 'This field is required',
+              required: 'это поле обязательное',
               pattern: {
                 value: /^[A-Za-z]+$/i,
-                message: 'use characters a-Z',
+                message: 'используйте символы a-Z',
               },
             })}
           />
@@ -82,10 +74,10 @@ const ContactForm = () => {
             label="Number"
             type="text"
             {...register('number', {
-              required: 'This field is required',
+              required: 'это поле обязательное',
               pattern: {
                 value: /[1-9,+]+$/i,
-                message: 'используйте цифры',
+                message: 'используйте цифры и +',
               },
             })}
           />
@@ -98,14 +90,14 @@ const ContactForm = () => {
             label="Age"
             type="number"
             {...register('age', {
-              required: 'This field is required',
+              required: 'это поле обязательное',
               min: {
                 value: 18,
                 message: 'You must be over 18 to create an account',
               },
               max: {
                 value: 100,
-                message: 'enter correct age',
+                message: 'введите правильный возраст',
               },
             })}
           />
@@ -122,7 +114,7 @@ const ContactForm = () => {
               label="Gender"
               defaultValue=""
               {...register('gender', {
-                required: 'This field is required',
+                required: 'это поле обязательное',
               })}
             >
               <MenuItem value="Male">Male</MenuItem>
@@ -138,10 +130,10 @@ const ContactForm = () => {
             label="city"
             type="text"
             {...register('city', {
-              required: 'This field is required',
+              required: 'это поле обязательное',
               pattern: {
                 value: /^[A-Za-z]+$/i,
-                message: 'use characters a-Z',
+                message: 'используйте символы a-Z',
               },
             })}
           />

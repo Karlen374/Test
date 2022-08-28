@@ -4,18 +4,27 @@ import { IUser } from 'src/types/IUser';
 import { IUserSignInData } from 'src/types/IUserSignInData';
 import { IUserSignUpData } from 'src/types/IUserSignUpData';
 
+interface IAlertMessage{
+  text: string;
+  alert: 'error' | 'info' | 'success'| 'warning';
+}
 interface AuthorizationState {
   signUpModal:boolean;
   signInModal:boolean;
   registeredUserData:IUser | null;
-  alertMessage:string
+  alertStatus:boolean;
+  alertMessage: IAlertMessage;
 }
 
 const initialState:AuthorizationState = {
   signUpModal: false,
   signInModal: false,
   registeredUserData: null,
-  alertMessage: '',
+  alertStatus: false,
+  alertMessage: {
+    text: '',
+    alert: 'success',
+  },
 };
 
 export const signIn = createAsyncThunk(
@@ -46,6 +55,12 @@ const AuthorizationSlice = createSlice({
     closeSignUpModal: (state) => {
       state.signUpModal = false;
     },
+    openAlertModal: (state) => {
+      state.alertStatus = true;
+    },
+    closeAlertModal: (state) => {
+      state.alertStatus = false;
+    },
     openSignInModal: (state) => {
       state.signInModal = true;
       state.signUpModal = false;
@@ -69,13 +84,16 @@ const AuthorizationSlice = createSlice({
         localStorage.setItem('registeredUserData', JSON.stringify(action.payload));
       })
       .addCase(signIn.rejected, (state) => {
-        state.alertMessage = 'please enter correct data';
+        state.alertStatus = true;
+        state.alertMessage = { text: 'Введен неверный логин или пароль', alert: 'error' };
       })
       .addCase(signUp.fulfilled, (state) => {
-        state.alertMessage = 'registration completed successfully';
+        state.alertStatus = true;
+        state.alertMessage = { text: 'Регистрация прошла успешно ', alert: 'success' };
       })
       .addCase(signUp.rejected, (state) => {
-        state.alertMessage = 'please enter correct data';
+        state.alertStatus = true;
+        state.alertMessage = { text: 'что то пошло не так', alert: 'error' };
       });
   },
 });
@@ -89,6 +107,8 @@ export const {
   closeSignUpModal,
   openSignInModal,
   closeSignInModal,
+  openAlertModal,
+  closeAlertModal,
   signOut,
   getRegisteredUserData,
 } = actions;

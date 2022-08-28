@@ -4,7 +4,8 @@ import TextField from '@mui/material/TextField';
 import Modal from 'src/components/modal/modal';
 import ContactForm from 'src/components/contactForm/contactForm';
 import { useAppDispatch, useAppSelector } from 'src/hooks/hooks';
-import { openContactModal } from 'src/store/slices/contactSlice';
+import { changeViewedContacts, openContactModal } from 'src/store/slices/contactSlice';
+import React from 'react';
 import style from './contactsHeader.module.scss';
 
 const ContactsHeader = () => {
@@ -13,7 +14,12 @@ const ContactsHeader = () => {
   return (
     <>
       <div className={style.header}>
-        <TextField id="outlined-basic" label="Поиск" variant="outlined" />
+        <TextField
+          id="outlined-basic"
+          label="Поиск"
+          onChange={(e) => dispatch(changeViewedContacts(e.target.value))}
+          variant="outlined"
+        />
         <Button
           onClick={() => dispatch(openContactModal())}
           variant="contained"

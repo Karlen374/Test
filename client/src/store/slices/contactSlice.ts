@@ -13,18 +13,18 @@ interface IEditForm{
 interface ContactState {
   contactModal:boolean;
   userContacts: IContact[] | null;
+  viewedUserContacts: IContact[] | null;
   editContact: IEditForm;
   editContactId: string;
-  alertMessage:string
 }
 const initialState:ContactState = {
   contactModal: false,
   userContacts: null,
+  viewedUserContacts: null,
   editContact: {
     name: '', surName: '', age: 18, gender: '', city: '', number: '',
   },
   editContactId: '',
-  alertMessage: '',
 };
 
 export const create = createAsyncThunk(
@@ -51,6 +51,14 @@ export const edit = createAsyncThunk(
     return response;
   },
 );
+export const deleteContactById = createAsyncThunk(
+  'contact/delete',
+  async (_id:string) => {
+    const { deleteContact } = useContactService();
+    const response = await deleteContact(_id);
+    return response;
+  },
+);
 const ContactSlice = createSlice({
   name: 'contact',
   initialState,
@@ -65,19 +73,53 @@ const ContactSlice = createSlice({
       };
     },
     getEditContactData: (state, action) => {
-      console.log(action.payload);
       state.editContact = action.payload;
       state.contactModal = true;
     },
+    changeViewedContacts: (state, action) => {
+      if (state.userContacts) {
+        state.viewedUserContacts = state.userContacts?.filter((item) => {
+          const searchMarkers = `${item.name} ${item.surName} ${item.number} ${
+            item.surName} ${item.name} ${item.number} ${
+            item.name} ${item.number} ${item.surName} ${
+            item.surName} ${item.number} ${item.name} ${
+            item.number} ${item.name} ${item.surName} ${
+            item.number} ${item.surName} ${item.name}`;
 
+          return searchMarkers.toUpperCase().indexOf(action.payload.toUpperCase()) > -1;
+        });
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(create.fulfilled, (state, action) => {
-        if (state.userContacts) state.userContacts = [...state.userContacts, action.payload];
+        if (state.userContacts) {
+          state.viewedUserContacts = [...state.userContacts, action.payload];
+          state.userContacts = [...state.userContacts, action.payload];
+        }
       })
       .addCase(get.fulfilled, (state, action) => {
         state.userContacts = action.payload;
+        state.viewedUserContacts = action.payload;
+      })
+      .addCase(edit.fulfilled, (state, action) => {
+        if (state.userContacts) {
+          state.userContacts = state.userContacts?.map((item) => {
+            if (item._id !== action.payload._id) return item;
+            else return action.payload;
+          });
+          state.viewedUserContacts = state.userContacts?.map((item) => {
+            if (item._id !== action.payload._id) return item;
+            else return action.payload;
+          });
+        }
+      })
+      .addCase(deleteContactById.fulfilled, (state, action) => {
+        if (state.userContacts) {
+          state.userContacts = state.userContacts?.filter((item) => item._id !== action.payload);
+          state.viewedUserContacts = state.userContacts;
+        }
       });
   },
 });
@@ -90,4 +132,5 @@ export const {
   openContactModal,
   closeContactModal,
   getEditContactData,
+  changeViewedContacts,
 } = actions;

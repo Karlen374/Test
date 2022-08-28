@@ -27,9 +27,21 @@ class ContactController {
     try{
       const { authorid } = req.headers;
       const contacts = await Contact.find()
-      return res.status(200).json(contacts.filter((item) => item.authorId===authorid))
+      const currentAuthorContacts = contacts.filter((item) => item.authorId===authorid)
+      return res.status(200).json(currentAuthorContacts)
     } catch(e) {
       res.status(500).json(e);
+    }
+  }
+  async deleteContact (req,res) {
+    try{
+      const { _id } = req.body
+      console.log('_id=',_id);
+      const delContact = await Contact.deleteOne({ _id })
+      console.log('delContact=',delContact);
+      return res.status(200).json(_id)
+    } catch (e) {
+      res.status(500).json(e)
     }
   }
 }

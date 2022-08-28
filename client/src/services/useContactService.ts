@@ -19,10 +19,15 @@ const useContactService = () => {
     const res = await request(`${_apiBase}/edit`, 'POST', JSON.stringify(data));
     return res;
   };
+  const deleteContact = async (_id:string) => {
+    const res = await request(`${_apiBase}/delete`, 'DELETE', JSON.stringify({ _id }));
+    return res;
+  };
   return {
     createContact,
     getContacts,
     editContact,
+    deleteContact,
   };
 };
 

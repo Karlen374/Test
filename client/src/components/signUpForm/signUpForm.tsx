@@ -40,10 +40,10 @@ const SignUpForm = () => {
             label="Name"
             type="text"
             {...register('userName', {
-              required: 'This field is required',
+              required: 'это поле обязательное',
               pattern: {
                 value: /^[A-Za-z]+$/i,
-                message: 'use characters a-Z',
+                message: 'используйте символы a-Z',
               },
             })}
           />
@@ -56,7 +56,7 @@ const SignUpForm = () => {
             label="Age"
             type="number"
             {...register('userAge', {
-              required: 'This field is required',
+              required: 'это поле обязательное',
               min: {
                 value: 18,
                 message: 'You must be over 18 to create an account',
@@ -80,7 +80,7 @@ const SignUpForm = () => {
               label="Gender"
               defaultValue=""
               {...register('userGender', {
-                required: 'This field is required',
+                required: 'это поле обязательное',
               })}
             >
               <MenuItem value="Male">Male</MenuItem>
@@ -96,10 +96,10 @@ const SignUpForm = () => {
             label="city"
             type="text"
             {...register('userCity', {
-              required: 'This field is required',
+              required: 'это поле обязательное',
               pattern: {
                 value: /^[A-Za-z]+$/i,
-                message: 'use characters a-Z',
+                message: 'используйте символы a-Z',
               },
             })}
           />
@@ -113,10 +113,10 @@ const SignUpForm = () => {
             label="E-mail address"
             type="email"
             {...register('email', {
-              required: 'This field is required',
+              required: 'это поле обязательное',
               pattern: {
                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message: 'Please Enter a valid E-mail! ',
+                message: 'Пожалуйста введите корректный E-mail! ',
               },
             })}
           />
@@ -131,14 +131,14 @@ const SignUpForm = () => {
             type="password"
             autoComplete="current-password"
             {...register('password', {
-              required: 'This field is required',
+              required: 'это поле обязательное',
               minLength: {
                 value: 3,
-                message: 'Password is too short',
+                message: 'Слишком короткий пароль',
               },
               pattern: {
                 value: /^[A-Za-z]+$/i,
-                message: 'use characters a-Z',
+                message: 'используйте символы a-Z',
               },
             })}
           />

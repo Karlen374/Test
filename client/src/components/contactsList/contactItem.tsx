@@ -11,7 +11,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { red, yellow } from '@mui/material/colors';
 import LocationCityIcon from '@mui/icons-material/LocationCity';
-import { getEditContactData } from 'src/store/slices/contactSlice';
+import { deleteContactById, getEditContactData } from 'src/store/slices/contactSlice';
 import { useAppDispatch } from 'src/hooks/hooks';
 import styles from './contactsList.module.scss';
 
@@ -22,6 +22,9 @@ const ContactItem = ({ contact }:ContactItemProps) => {
   const dispatch = useAppDispatch();
   const openEditContactModalForm = () => {
     dispatch(getEditContactData(contact));
+  };
+  const deleteContact = () => {
+    if (contact) dispatch(deleteContactById(contact?._id));
   };
   return (
     <Card className={styles.contact_item}>
@@ -36,7 +39,7 @@ const ContactItem = ({ contact }:ContactItemProps) => {
             <IconButton onClick={openEditContactModalForm} aria-label="settings">
               <EditIcon sx={{ color: yellow[400] }} />
             </IconButton>
-            <IconButton aria-label="settings">
+            <IconButton onClick={deleteContact} aria-label="settings">
               <DeleteIcon sx={{ color: red[700] }} />
             </IconButton>
           </>

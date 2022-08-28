@@ -31,10 +31,10 @@ return (
           label="E-mail address"
           type="email"
           {...register('email', {
-            required: 'This field is required',
+            required: 'это поле обязательное',
             pattern: {
               value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-              message: 'Please Enter a valid E-mail! ',
+              message: 'Пожалуйста введите корректный E-mail! ',
             },
           })}
         />
@@ -49,14 +49,14 @@ return (
           type="password"
           autoComplete="current-password"
           {...register('password', {
-            required: 'This field is required',
+            required: 'это поле обязательное',
             minLength: {
               value: 3,
-              message: 'Password is too short',
+              message: 'Слишком короткий пароль',
             },
             pattern: {
               value: /^[A-Za-z]+$/i,
-              message: 'use characters a-Z',
+              message: 'используйте символы a-Z',
             },
           })}
         />
