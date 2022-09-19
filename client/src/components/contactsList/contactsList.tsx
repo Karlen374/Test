@@ -7,6 +7,7 @@ import styles from './contactsList.module.scss';
 
 const ContactsList = () => {
   const { viewedUserContacts } = useAppSelector((store) => store.contact);
+  console.log('conatact = ', viewedUserContacts);
   const transitions = useTransition(viewedUserContacts, {
     from: { opacity: 0 },
     enter: { opacity: 1 },
@@ -17,7 +18,7 @@ const ContactsList = () => {
   return (
     <div className={styles.contact}>
       <Grid container spacing={3}>
-        {viewedUserContacts
+        {viewedUserContacts && viewedUserContacts?.length
         && (
         <div className="css-zow5z4-MuiGrid-root">
           {transitions(({ opacity }, item) => (
