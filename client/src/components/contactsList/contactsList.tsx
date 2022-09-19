@@ -7,7 +7,6 @@ import styles from './contactsList.module.scss';
 
 const ContactsList = () => {
   const { viewedUserContacts } = useAppSelector((store) => store.contact);
-  console.log('conatact = ', viewedUserContacts);
   const transitions = useTransition(viewedUserContacts, {
     from: { opacity: 0 },
     enter: { opacity: 1 },
