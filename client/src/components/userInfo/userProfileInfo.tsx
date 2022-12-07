@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
 import LocationCityIcon from '@mui/icons-material/LocationCity';
 import { useAppSelector } from 'src/hooks/hooks';
-import styles from './userInfo.module.scss';
+import styles from './UserInfo.module.scss';
 
 const UserProfileInfo = () => {
   const { registeredUserData } = useAppSelector((store) => store.authorization);
