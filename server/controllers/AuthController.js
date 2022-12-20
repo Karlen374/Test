@@ -58,6 +58,23 @@ class AuthController {
       res.status(400).json({message: "Login Error"});
     }
   }
+  async getUsers(req, res) {
+    try {
+      const Users = await User.find()
+      return res.json(Users.map((user) => { 
+        return {
+          _id:user._id,
+          userName:user.userName,
+          userCity:user.userCity,
+          userGender:user.userGender,
+          userAge:user.userAge,
+          email:user.email,
+          }
+      }));
+    } catch (e){
+      res.status(500).json(e)
+    }
+  }
 }
 
 export default new AuthController();

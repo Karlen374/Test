@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import useAuthorizationServices from 'src/services/useAuthorizationService';
+import { IRegisteredUser } from 'src/types/IRegisteredUser';
 import { IUser } from 'src/types/IUser';
 import { IUserSignInData } from 'src/types/IUserSignInData';
 import { IUserSignUpData } from 'src/types/IUserSignUpData';
@@ -12,6 +13,7 @@ interface AuthorizationState {
   signUpModal:boolean;
   signInModal:boolean;
   registeredUserData:IUser | null;
+  allUsers:IRegisteredUser[] | null;
   alertStatus:boolean;
   alertMessage: IAlertMessage;
 }
@@ -21,6 +23,7 @@ const initialState:AuthorizationState = {
   signInModal: false,
   registeredUserData: null,
   alertStatus: false,
+  allUsers: null,
   alertMessage: {
     text: '',
     alert: 'success',
@@ -40,6 +43,15 @@ export const signUp = createAsyncThunk(
   async (data:IUserSignUpData) => {
     const { signUpUser } = useAuthorizationServices();
     const response = await signUpUser(data);
+    return response;
+  },
+);
+
+export const getAllUsers = createAsyncThunk(
+  'authorization/getAllUsers',
+  async () => {
+    const { getAllRegisteredUsers } = useAuthorizationServices();
+    const response = await getAllRegisteredUsers();
     return response;
   },
 );
@@ -86,6 +98,9 @@ const AuthorizationSlice = createSlice({
       .addCase(signIn.rejected, (state) => {
         state.alertStatus = true;
         state.alertMessage = { text: 'Введен неверный логин или пароль', alert: 'error' };
+      })
+      .addCase(getAllUsers.fulfilled, (state, action) => {
+        state.allUsers = action.payload;
       })
       .addCase(signUp.fulfilled, (state) => {
         state.alertStatus = true;
